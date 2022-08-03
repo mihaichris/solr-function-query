@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="example-data-driven-schema" version="1.6">
+    <uniqueKey>product_id</uniqueKey>
+    <similarity class="solr.SchemaSimilarityFactory" />
+    <fieldType name="pint" class="solr.IntPointField" />
+    <fieldType name="plong" class="solr.LongPointField" />
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+    <fieldType name="tags" class="solr.TextField" omitNorms="true" positionIncrementGap="100" enableGraphQueries="false" autoGeneratePhraseQueries="false" omitTermFreqAndPositions="true" termVectors="true">
+        <analyzer type="index">
+            <tokenizer class="solr.PatternTokenizerFactory" pattern="([a-zA-Z0-9]+|\s+|\|\d+\.\d+)" group="1"/>
+            <filter class="solr.LowerCaseFilterFactory"/>
+            <filter class="solr.HunspellStemFilterFactory" dictionary="hunspell_ro.dic" affix="hunspell_ro.aff" ignoreCase="true" strictAffixParsing="true" />
+            <filter class="mihaichris.solr.filters.ConcatenateGraphFilterFactory" tokenSeparator=""/>
+            <filter class="solr.DelimitedPayloadTokenFilterFactory" encoder="float"/>
+        </analyzer>
+        <analyzer type="query">
+            <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+            <filter class="solr.LowerCaseFilterFactory"/>
+            <filter class="solr.HunspellStemFilterFactory" dictionary="hunspell_ro.dic" affix="hunspell_ro.aff" ignoreCase="true" strictAffixParsing="true" />
+            <filter class="mihaichris.solr.filters.ShingleGraphFilterFactory" outputUnigramsIfNoShingles="true" outputUnigrams="true"/>
+        </analyzer>
+    </fieldType>
+
+    <field name="_version_" type="plong" indexed="true" stored="true" docValues="true" />
+    <field name="id" type="string" indexed="true" stored="true" required="true" docValues="true" />
+    <field name="product_id" type="string" indexed="true" stored="true" required="true" docValues="true" />
+    <field name="tags_category_traffic" type="tags" stored="true" indexed="true" multiValued="true" />
+</schema>
