@@ -24,5 +24,4 @@
     <field name="_version_" type="plong" indexed="true" stored="true" docValues="true" />
     <field name="id" type="string" indexed="true" stored="true" required="true" docValues="true" />
     <field name="product_id" type="string" indexed="true" stored="true" required="true" docValues="true" />
-    <field name="tags_category_traffic" type="tags" stored="true" indexed="true" multiValued="true" />
 </schema>
